@@ -23,6 +23,7 @@ snarkjs 是js版本的snark实现，它方便于用于网页上运行，运行�
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
     
     <link rel="stylesheet" href="https://asdavinci.ing/scss/style.min.b7557ade6c54440e7841b33defe853582513e41c0fe3b0f54ca8e04c687ceed5.css">
+    <link rel="icon" href="images/icon.png" type="image/x-icon">
 
     <meta property="og:title" content="Groth16 Ceremony Introduction" />
 <meta property="og:description" content="在 zkSNARK 协议中，经常会出现 Trusted Setup 步骤。这一步骤会产生一组基于电路的公共参数，被称为CRS（Common Reference String）。这些公共参数包括用于后续的证明和验证的证明密钥（pk）和验证密钥（vk）。Trusted Setup 过程中产生的一些随机值，被称为&quot;toxic waste&quot;。这些值是不能公开的，因为一旦被攻击者利用，它可以用来伪造的证明。所以产生 CRS 步骤必须由受信任方来完成，并且在创建 CRS 后立即销毁掉这些随机值。
