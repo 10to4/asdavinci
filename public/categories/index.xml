@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on As Da Vinci</title>
+    <link>https://asdavinci.ing/categories/</link>
+    <description>Recent content in Categories on As Da Vinci</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 10 Dec 2022 00:00:00 +0800</lastBuildDate>
+    <atom:link href="https://asdavinci.ing/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>zkp</title>
+      <link>https://asdavinci.ing/categories/zkp/</link>
+      <pubDate>Sat, 10 Dec 2022 00:00:00 +0800</pubDate>
+      <guid>https://asdavinci.ing/categories/zkp/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>groth16</title>
+      <link>https://asdavinci.ing/categories/groth16/</link>
+      <pubDate>Fri, 29 Apr 2022 21:10:00 +0700</pubDate>
+      <guid>https://asdavinci.ing/categories/groth16/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

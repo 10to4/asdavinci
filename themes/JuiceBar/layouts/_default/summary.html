@@ -1,0 +1,21 @@
+<article class="post">
+  <div class="single-container column is-centered">
+    <div class="archive" id="post-container">
+      <header class="post-header">
+        <h1 class="post-title hover-underline-animation"><a class="post-link" style="border-bottom-style: double; style:solid;" href="{{ .RelPermalink }}"> 🐣 {{ .Title }}</a></h1>
+       
+       
+      </header>
+      <div class="post-content">
+        <div class="excerpt post-summary" style="line-height: 2">
+          {{ .Summary }}
+        </div>
+        
+        <div class="post-time-container">
+          <span class="post-time" style="font-style: italic; font-size: smaller"> {{ .Date.Format (.Site.Params.dateFormatToUse | default "2006-01-02") }} </span>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</article>

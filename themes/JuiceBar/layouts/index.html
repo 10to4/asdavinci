@@ -1,0 +1,51 @@
+{{ define "main" }}
+<article>
+    {{- with site.Params}}
+    <div class="is-centered">
+            <div class="title subtitle heading is-6">
+                <div id="home-box" >
+                            {{ with .imageUrl }}
+                            <div class="avatar-container">
+                                <img src="{{.}}" class="author-avatar">
+
+                            </div>
+                            {{ end }}
+
+
+
+                        <h1 id="home-title" class="title is-1 ">{{ .Title }}</h1>
+                    <div class="description column content typewriter-effect">
+                        <div class="text" id="typewriter-text"> {{ .Content }}</div>
+
+                    </div>
+                    <script>
+                        const typeWriter = document.getElementById('typewriter-text');
+                        typeWriter.style.setProperty('--characters', typeWriter.innerHTML.length);
+                    </script>
+
+                    <div class="social-icon">
+
+                        {{ range .Social }}
+                        <a href="{{ .url }}" title="{{ .name }}"><span class="change-color icon">
+                                {{ partial "svg.html" . }}
+                            </span></a>
+                        {{ end }}
+
+                    </div>
+
+                </div>
+            </div>
+
+    </div>
+    {{- end -}}
+
+</article>
+<div class="summary">
+    {{- $paginator := .Paginate  (where (where .Site.RegularPages "Type" "post") ".Params.draft" "!=" true)  }}
+    {{ range $paginator.Pages }}
+        {{ .Render "summary" }}
+    {{ end }}
+    {{ partial "pagination.html" . }}
+
+</div>
+{{ end }}

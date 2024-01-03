@@ -1,0 +1,76 @@
+theme = 'JuiceBar'
+
+baseURL = 'https://asdavinci.ing/'
+languageCode = 'en-us'
+title = 'As Da Vinci'
+
+[params]
+author = "Even Lu"
+description = "Good Expression is very a important thing. Start to exercise my writing and speaking skills at here. As well as to organize my knowledges."
+authorImage = "/images/evenlu.png"
+paginate = 5 
+Title = "Even Lu's BLOG"
+content = "My notes about learning, reading, thinking, memo..."
+imageUrl = "/images/evenlu.png"
+
+# To add a new social icon 
+# More social icons can be found in JuiceBar\layouts\partials\svg.html.
+[[params.social]]
+name = "twitter"
+url = "https://twitter.com/evenlu_lu"
+[[params.social]]
+name = "Github"
+url = "https://github.com/10to4"
+[[params.social]]
+name = "telegram"
+url = "https://t.me/pedestrianA"
+[[params.social]]
+name = "email"
+url = "mailto: one0to4@gmail.com"
+# [[params.social]]
+# name = "instagram"
+# url = "your_url"
+# [[params.social]]
+# name = "mastodon"
+# url = "your_url"
+# [[params.social]]
+# name = "reddit"
+# url = "your_url"
+# [[params.social]]
+# name = "stackoverflow"
+# url = "your_url"
+
+[taxonomies]
+category = "categories"
+tag = "tags"
+
+# To add a new navigation link
+[[menu.main]]
+name = "Blog"
+url = "/post"
+[[menu.main]]
+name = "About"
+url = "/about"
+[[menu.main]]
+name = "Categories"
+url = "/categories"
+
+# If using the giscus commenting system
+#[params.giscus]
+#repo = "ENTER REPO HERE"
+#repoID = "ENTER REPO ID HERE"
+#category = "ENTER CATEGORY NAME HERE"
+#categoryID = "ENTER CATEGORY ID HERE"
+#mapping = "og:title"
+#reactionsEnabled = "1"
+#emitMetadata = "0"
+#inputPosition = "bottom"
+#lang = "en"
+#loading = "lazy"
+
+# Used for outputting the documentation (required).
+[outputs]
+home = ["HTML", "RSS", "JSON"]
+
+[page.math]
+	enable = true

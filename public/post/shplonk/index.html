@@ -1,0 +1,417 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>SHPLONK | As Da Vinci</title>
+    <meta name="description"
+        content="在Plonk协议中，多项式承诺是非常重要的一个环节，协议中的多项式承诺实现了多个多项式在两个点上的open。但是在实际的应用场景下，有可能会出现需要多个多项式在多个不同点处open的场景，如果能通过改进多项式承诺协议来使得plonk支持多个多项式在不同的子集点处的open。
+若 $ z \in S $，那么 $Z_S(x) = \prod_{z \in S} (X-z)$。
+假设有一个数据集$T = {z_1, z_2, &hellip;, z_t}$，并且它的子集$S_1,S_2,&hellip;,S_k \subset T$。如果有k个多项式$f_1(x), f_2(x),&hellip;,f_k(x)$，它们的承诺分别为$cm_1, cm_2,&hellip;,cm_k$，要分别在$S_1,S_2,&hellip;,S_k $上open。
+首先若要使用KZG10对一个多项式做验证的话，那么
+prover计算多项式 $$ h(x) = \frac{f_i(x) - r_i(x)}{Z_{S_i}(x)} $$
+其中$r_i(x)$ 是一个$|s_i|$ 阶的多项式，且满足再$f_i(x) = r_i(x), x \in S_i$。
+再使用srs参数计算证明$W =[h(x)]_1 = g^{h(x)}$，发送给verifier。
+Verifier 拿到证明W后进行验证，这里需要两次pairing运算。
+$$ e(cm_i - [r_i(x)]_1, g_2) = e(W,g_2 ^ {k}) $$
+其中 $k = Z_{S_i}(x)$
+如果要一次性得对这k个多项式进行验证，只需要引入一个随机数
+verifier 生成一个随机数$\gamma$，并发送给prover
+prover 拿着随机数将k组多项式的证明计算 $$ h_i(x) = \frac{f_i(x) - r_i(x)}{Z_{S_i}(x)} $$">
+    <link rel="canonical" href="https://asdavinci.ing/post/shplonk/" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+    
+    <link rel="stylesheet" href="https://asdavinci.ing/scss/style.min.b7557ade6c54440e7841b33defe853582513e41c0fe3b0f54ca8e04c687ceed5.css">
+
+    <meta property="og:title" content="SHPLONK" />
+<meta property="og:description" content="在Plonk协议中，多项式承诺是非常重要的一个环节，协议中的多项式承诺实现了多个多项式在两个点上的open。但是在实际的应用场景下，有可能会出现需要多个多项式在多个不同点处open的场景，如果能通过改进多项式承诺协议来使得plonk支持多个多项式在不同的子集点处的open。
+若 $ z \in S $，那么 $Z_S(x) = \prod_{z \in S} (X-z)$。
+假设有一个数据集$T = {z_1, z_2, &hellip;, z_t}$，并且它的子集$S_1,S_2,&hellip;,S_k \subset T$。如果有k个多项式$f_1(x), f_2(x),&hellip;,f_k(x)$，它们的承诺分别为$cm_1, cm_2,&hellip;,cm_k$，要分别在$S_1,S_2,&hellip;,S_k $上open。
+首先若要使用KZG10对一个多项式做验证的话，那么
+prover计算多项式 $$ h(x) = \frac{f_i(x) - r_i(x)}{Z_{S_i}(x)} $$
+其中$r_i(x)$ 是一个$|s_i|$ 阶的多项式，且满足再$f_i(x) = r_i(x), x \in S_i$。
+再使用srs参数计算证明$W =[h(x)]_1 = g^{h(x)}$，发送给verifier。
+Verifier 拿到证明W后进行验证，这里需要两次pairing运算。
+$$ e(cm_i - [r_i(x)]_1, g_2) = e(W,g_2 ^ {k}) $$
+其中 $k = Z_{S_i}(x)$
+如果要一次性得对这k个多项式进行验证，只需要引入一个随机数
+verifier 生成一个随机数$\gamma$，并发送给prover
+prover 拿着随机数将k组多项式的证明计算 $$ h_i(x) = \frac{f_i(x) - r_i(x)}{Z_{S_i}(x)} $$" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://asdavinci.ing/post/shplonk/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-12-10T00:00:00+08:00" />
+<meta property="article:modified_time" content="2022-12-10T00:00:00+08:00" /><meta property="og:site_name" content="Even Lu&#39;s BLOG" />
+
+
+    <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="SHPLONK"/>
+<meta name="twitter:description" content="在Plonk协议中，多项式承诺是非常重要的一个环节，协议中的多项式承诺实现了多个多项式在两个点上的open。但是在实际的应用场景下，有可能会出现需要多个多项式在多个不同点处open的场景，如果能通过改进多项式承诺协议来使得plonk支持多个多项式在不同的子集点处的open。
+若 $ z \in S $，那么 $Z_S(x) = \prod_{z \in S} (X-z)$。
+假设有一个数据集$T = {z_1, z_2, &hellip;, z_t}$，并且它的子集$S_1,S_2,&hellip;,S_k \subset T$。如果有k个多项式$f_1(x), f_2(x),&hellip;,f_k(x)$，它们的承诺分别为$cm_1, cm_2,&hellip;,cm_k$，要分别在$S_1,S_2,&hellip;,S_k $上open。
+首先若要使用KZG10对一个多项式做验证的话，那么
+prover计算多项式 $$ h(x) = \frac{f_i(x) - r_i(x)}{Z_{S_i}(x)} $$
+其中$r_i(x)$ 是一个$|s_i|$ 阶的多项式，且满足再$f_i(x) = r_i(x), x \in S_i$。
+再使用srs参数计算证明$W =[h(x)]_1 = g^{h(x)}$，发送给verifier。
+Verifier 拿到证明W后进行验证，这里需要两次pairing运算。
+$$ e(cm_i - [r_i(x)]_1, g_2) = e(W,g_2 ^ {k}) $$
+其中 $k = Z_{S_i}(x)$
+如果要一次性得对这k个多项式进行验证，只需要引入一个随机数
+verifier 生成一个随机数$\gamma$，并发送给prover
+prover 拿着随机数将k组多项式的证明计算 $$ h_i(x) = \frac{f_i(x) - r_i(x)}{Z_{S_i}(x)} $$"/>
+
+    
+    
+    
+
+</head><body><nav class="navbar is-light" role="navigation">
+    <div class="container">
+        <div class="navbar-brand">
+             
+             <a id="theme-toggle" class="theme-toggle" href="#">
+                <img src="https://asdavinci.ing/svg/sun.svg" alt="sun icon" class="theme-icon" />
+            </a>
+
+            <a href="/" title="home" class="navbar-item">
+                <span class="logo"> 
+                    <h1>As Da Vinci</h1>
+                </span>
+            </a>
+
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div class="navbar-menu">
+            
+
+        </div>
+        <div class="search">
+            
+            <div id="fastSearch">
+                <input id="searchInput" tabindex="0" placeholder="Search..">
+                <ul id="searchResults">
+
+                </ul>
+            </div>
+            
+            <a id="search-btn" style="display: inline-block" href="# ">
+                <div class="icon-search"><svg class="search-svg" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+            </a>
+            <div class="navbar-start" style="margin-left: 60px;">
+                
+                <a href="/about" class="navbar-item">🎃 About</a>
+                
+                <a href="/post" class="navbar-item">🎃 Blog</a>
+                
+                <a href="/categories" class="navbar-item">🎃 Categories</a>
+                
+            </div>
+        </div>
+
+        <script src="/js/fuse.min.js"></script> 
+        <script src="/js/fastsearch.js"></script>
+
+    </div>
+</nav>
+
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <script type="text/javascript"
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            displayMath: [['$$','$$'], ['\[','\]']],
+            processEscapes: true,
+            processEnvironments: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            TeX: { equationNumbers: { autoNumber: "AMS" },
+                extensions: ["AMSmath.js", "AMSsymbols.js"] }
+        }
+        });
+    </script>
+    
+<script>
+    
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        var burger = document.querySelector('.navbar-burger');
+        burger.addEventListener('click', function() {
+            burger.classList.toggle('is-active');
+            document.querySelector('.navbar-menu').classList.toggle('is-active');
+        });
+    });
+
+    
+    function setTheme(theme) {
+        let body = document.body;
+        let themeIcon = document.querySelector(".theme-icon");
+        if (theme === "dark") {
+            body.classList.add("dark-mode");
+            themeIcon.src = "https:\/\/asdavinci.ing\/svg/moon.svg";
+            themeIcon.alt = "moon icon";
+        } else {
+            body.classList.remove("dark-mode");
+            themeIcon.src = "https:\/\/asdavinci.ing\/svg/sun.svg";
+            themeIcon.alt = "sun icon";
+        }
+        
+        localStorage.setItem("theme", theme);
+    }
+
+    
+    let theme = localStorage.getItem("theme") || "light";
+    const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (isDarkMode) {
+        
+        setTheme('dark');
+
+    } else {
+        
+        setTheme('light');
+    }
+    setTheme(theme);
+
+    
+    document.getElementById("theme-toggle").addEventListener("click", function() {
+        if (theme === "light") {
+            theme = "dark";
+        } else {
+            theme = "light";
+        }
+        setTheme(theme);
+    });
+
+
+
+</script>
+
+</header><main>
+<div class="single-container">
+    <div class="archive">
+        <h1 class="title is-1" style="border-bottom-style:double; ">🐥  SHPLONK</h1>
+        <div  class="title subtitle heading is-6">
+            <div class="author-info columns is-vcentered">
+                <div class="column">
+                    <div class="columns is-vcentered is-mobile">
+                        
+                        <div class="column is-narrow">
+                            
+                        </div>
+                        
+                        <div class="column">
+                            
+                            
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            <div class="small-categories-container" id = "small-categories-container-style">
+                 <a href="/categories/zkp">zkp</a>
+            </div>
+        </div>
+        <div class="content article-content" style="line-height: 2">
+            <div class="toc-container">
+                
+    <div class="post-toc">
+        
+            <aside>
+                <button id="tocButton" ><h4 id="contents" style="margin-left: 1vw;color:rgb(96, 134, 180);margin-bottom: 0;">CONTENTS</h4></button>
+                <div id="hide"><nav id="TableOfContents"></nav></div>
+            </aside>
+        
+    </div><script>
+    
+        let button = document.getElementById('tocButton');
+        let hide = document.getElementById("hide");
+        let contents=document.getElementById("contents");
+        button.addEventListener("click", function() {
+        if (hide.style.display!='block') {
+            hide.style.display='block'
+        } else {
+            hide.style.display='none'
+            contents.style.color='rgb(96, 134, 180)'
+        }
+        });
+    
+
+
+
+
+</script>
+            </div>
+            <p>在Plonk协议中，多项式承诺是非常重要的一个环节，协议中的多项式承诺实现了多个多项式在两个点上的open。但是在实际的应用场景下，有可能会出现需要多个多项式在多个不同点处open的场景，如果能通过改进多项式承诺协议来使得plonk支持多个多项式在不同的子集点处的open。</p>
+<p>若 $ z \in S $，那么 $Z_S(x) = \prod_{z \in S} (X-z)$。</p>
+<p>假设有一个数据集$T = {z_1, z_2, &hellip;, z_t}$，并且它的子集$S_1,S_2,&hellip;,S_k \subset T$。如果有k个多项式$f_1(x), f_2(x),&hellip;,f_k(x)$，它们的承诺分别为$cm_1, cm_2,&hellip;,cm_k$，要分别在$S_1,S_2,&hellip;,S_k $上open。</p>
+<p>首先若要使用KZG10对一个多项式做验证的话，那么</p>
+<ul>
+<li>
+<p>prover计算多项式
+$$
+h(x) = \frac{f_i(x) - r_i(x)}{Z_{S_i}(x)}
+$$</p>
+<p>其中$r_i(x)$ 是一个$|s_i|$ 阶的多项式，且满足再$f_i(x) = r_i(x), x \in S_i$。</p>
+<p>再使用srs参数计算证明$W =[h(x)]_1 = g^{h(x)}$，发送给verifier。</p>
+</li>
+<li>
+<p>Verifier 拿到证明W后进行验证，这里需要两次pairing运算。</p>
+<p>$$
+e(cm_i - [r_i(x)]_1, g_2) = e(W,g_2 ^ {k})
+$$</p>
+<p>其中 $k = Z_{S_i}(x)$</p>
+</li>
+</ul>
+<p>如果要一次性得对这k个多项式进行验证，只需要引入一个随机数</p>
+<ul>
+<li>
+<p>verifier 生成一个随机数$\gamma$，并发送给prover</p>
+</li>
+<li>
+<p>prover 拿着随机数将k组多项式的证明计算
+$$
+h_i(x) =   \frac{f_i(x) - r_i(x)}{Z_{S_i}(x)}
+$$</p>
+<p>再使用srs参数计算证明$W_i =[h(x)_i]_1 = g^{h_i(x)}$，发送给verifier。</p>
+</li>
+<li>
+<p>verifier拿到证明W后进行验证</p>
+<p>$  \prod_{i \in [k]} e(\gamma^{i-1} (cm_i-[r_i(x)]_1),  g_2) $</p>
+<p>$ =  \prod_{i \in [k]}e(W_i,g_2^{Z_{S_i}(x)})$</p>
+</li>
+</ul>
+<p>这个合并尚还不能降低计算量，需要2k次pairing运算。SHPlonk 中在验证步骤做了一个优化</p>
+<ul>
+<li>
+<p>首先verifier先计算一组</p>
+<p>$$
+Z_i = g_2^{Z_{T/S_i}(x)},i \in [k]
+$$</p>
+<p>其中$Z_{T/S_i}(x) = \frac{Z_T(x)}{Z_{S_i(x)}}$</p>
+</li>
+<li>
+<p>prover 拿着随机数将k组多项式的证明计算合并起来</p>
+<p>$$
+h(x) = \sum_{i \in [k]}\gamma^{i-1} \cdot  \frac{f_i(x) - r_i(x)}{Z_{S_i}(x)} \ = \sum_{i \in [k]}\gamma^{i-1} \cdot  \frac{(f_i(x) - r_i(x)) \cdot Z_{T/S_i}(x)}{Z_{T}(x)} \ =   \frac{\sum_{i \in [k]}\gamma^{i-1} \cdot(f_i(x) - r_i(x)) \cdot Z_{T/S_i}(x)}{Z_{T}(x)}
+$$</p>
+<p>再使用srs参数计算证明$W =[h(x)]_1 = g^{h(x)}$，发送给verifier。</p>
+</li>
+<li>
+<p>那么验证步骤就被改造为</p>
+<p>$$
+\prod_{i \in [k]} e(\gamma^{i-1} (cm_i-[r_i(x)]_1),  Z_i) =e(W,g_2^{Z_T(x)})
+$$</p>
+<p>这样pairing运算的数量就降低到了k+1次。</p>
+</li>
+</ul>
+<p>这里右侧已经不能合并了，未来进一步优化计算量</p>
+<ul>
+<li>
+<p>首先令
+$$
+f_Z(X) = \sum_{i \in [k]}\gamma^{i-1} \cdot Z_{T/S_i}(X)\cdot(f_i(X) - r_i(X))
+$$
+那么
+$$
+h(X) = \frac{f_Z(X)}{Z_T(X)}
+$$
+再使用srs参数计算证明$W =[h(x)]_1 = g^{h(x)}$，发送给verifier。</p>
+</li>
+<li>
+<p>verifier 产生一个随机数$z$，并发送给prover。</p>
+</li>
+<li>
+<p>再继续变换多项式的形式
+$$
+L(x) = f_Z(X) - h(X)\cdot Z_T(z)
+$$
+其中
+$$
+f_Z(X) = \sum_{i \in [k]}\gamma^{i-1} \cdot Z_{T/S_i}(z)\cdot(f_i(X) - r_i(z))
+$$
+显然$L(z) = 0$。所以L(x)必然能被$(x-z)$整除。</p>
+<p>所以prover可以继续构造证明
+$$
+h&rsquo;(x) = \frac{L(x)}{x-z}
+$$
+再使用srs参数计算证明$W&rsquo; =[h&rsquo;(x)]_1 = g^{h&rsquo;(x)}$，发送给verifier。这里就相当于把再S个点处opening的问题转换到了在一个点open的问题上了。</p>
+</li>
+<li>
+<p>Verifier 首先去计算</p>
+<p>$F = [f_Z(x)]1 = \sum_{i \in [k]}\gamma^{i-1} \cdot Z_{T/S_i(z)}(cm_i - [r_i(z)]_1) - Z_T(z)\cdot W$</p>
+<p>再继续验证
+$$
+e(F,[1]_2) = e(W&rsquo;,[x-z]_2)
+$$
+只剩下两个pairing 和k+1次的椭圆曲线上的乘法运算，这远远小于k+1次的计算消耗。</p>
+<p>原本的方案中，右侧的pairing已经不能合并了，所以这里优化的关键就是将$Z_{T/S}(x)$ 和 $Z_{Y}(x)$ 的计算变换成了在一个已知点处的计算，即$Z_{T/S}(z)$ 和 $Z_{Y}(z)$，因为$Z_{T/S}(x)$ 和 $Z_{Y}(x)$ 多项式是公开的，z是公开的，那么计算就可以只能在有限域上进行了，而不必管srs，因此原本pairing运算中在g2上算的这两项都可以直接乘到g1上了，这样也就合并了原来的多个pairing。</p>
+</li>
+</ul>
+<p>fflonk也是一种新的优化方案，它在SHPlonk的基础之上设计的优化方案，它继续沿用了SHPlonk的验证步骤，并结合了一种新的类似FFT运算的方法。fflonk的验证步骤中仅需要3次椭圆曲线上的运算，及2次pairing，与SHPlonk相比，又进一步优化了计算步骤。</p>
+
+        </div>
+        <div class="title subtitle heading is-6">
+            <div class="author-info columns is-vcentered">
+                <div class="column">
+                    <div class="columns is-vcentered is-mobile">
+                        
+                        <div class="column is-narrow">
+                            <img src="/images/evenlu.png" class="author-image">
+                        </div>
+                        
+                        <div class="column">
+                            <p>Even Lu</p>
+                            <p style="font-size: smaller; font-style: italic;"><time>2022.12.10</time>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <a href="#" id="scrollToTopButton">
+        <svg t="1686753152588" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            p-id="3988" width="48" height="48">
+            <path
+                d="M518.5 360.3c-3.2-4.4-9.7-4.4-12.9 0l-178 246c-3.8 5.3 0 12.7 6.5 12.7H381c10.2 0 19.9-4.9 25.9-13.2L512 460.4l105.2 145.4c6 8.3 15.6 13.2 25.9 13.2H690c6.5 0 10.3-7.4 6.5-12.7l-178-246z"
+                p-id="3989" fill="#363636"></path>
+            <path
+                d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64z m0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                p-id="3990" fill="#363636"></path>
+        </svg>
+    </a>
+
+<div class="pp-container">
+        <section class="pre-and-post">
+            <div class="has-text-left">
+                
+                <p style="font-style: italic; color:#d2a654;"> &lt;&lt; Previous post</p>
+                <a href="https://asdavinci.ing/post/groth16-ceremony/">Groth16 Ceremony Introduction</a>
+                
+            </div>
+            <div class="has-text-right">
+                
+            </div>
+        </section>
+    </div>
+</div>
+
+        </main><footer class="footer">
+    <div class="content has-text-centered">
+    <span>&copy; 2024 <a href="https://asdavinci.ing/">As Da Vinci</a></span>
+    <span>
+        Powered by Even Lu
+        
+    </span>
+    </div>
+        
+   
+  </footer></body>
+</html>
+

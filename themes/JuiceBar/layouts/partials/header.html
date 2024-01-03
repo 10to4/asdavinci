@@ -1,0 +1,130 @@
+<nav class="navbar is-light" role="navigation">
+    <div class="container">
+        <div class="navbar-brand">
+             <!-- sun icon -->
+             <a id="theme-toggle" class="theme-toggle" href="#">
+                <img src="{{ .Site.BaseURL }}svg/sun.svg" alt="sun icon" class="theme-icon" />
+            </a>
+
+            <a href="/" title="home" class="navbar-item">
+                <span class="logo"> 
+                    <h1>{{ .Site.Title }}</h1>
+                </span>
+            </a>
+
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div class="navbar-menu">
+            <!-- <div class="navbar-start">
+                {{ range .Site.Menus.main }}
+                <a href="{{ .URL }}" class="navbar-item">{{ .Name }}</a>
+                {{ end }}
+            </div> -->
+
+        </div>
+        <div class="search">
+            
+            <div id="fastSearch">
+                <input id="searchInput" tabindex="0" placeholder="Search..">
+                <ul id="searchResults">
+
+                </ul>
+            </div>
+            
+            <a id="search-btn" style="display: inline-block" href="# ">
+                <div class="icon-search"><svg class="search-svg" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+            </a>
+            <div class="navbar-start" style="margin-left: 60px;">
+                {{ range .Site.Menus.main }}
+                <a href="{{ .URL }}" class="navbar-item">🎃 {{ .Name }}</a>
+                {{ end }}
+            </div>
+        </div>
+
+        <script src="/js/fuse.min.js"></script> <!-- download and copy over fuse.min.js file from fusejs.io -->
+        <script src="/js/fastsearch.js"></script>
+
+    </div>
+</nav>
+
+    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- <script id="MathJax-script" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+    <script type="text/javascript"
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            displayMath: [['$$','$$'], ['\[','\]']],
+            processEscapes: true,
+            processEnvironments: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            TeX: { equationNumbers: { autoNumber: "AMS" },
+                extensions: ["AMSmath.js", "AMSsymbols.js"] }
+        }
+        });
+    </script>
+    
+<script>
+    
+    //hamburger icon on a mobile device.
+    document.addEventListener('DOMContentLoaded', function() {
+        var burger = document.querySelector('.navbar-burger');
+        burger.addEventListener('click', function() {
+            burger.classList.toggle('is-active');
+            document.querySelector('.navbar-menu').classList.toggle('is-active');
+        });
+    });
+
+    // theme color switch
+    function setTheme(theme) {
+        let body = document.body;
+        let themeIcon = document.querySelector(".theme-icon");
+        if (theme === "dark") {
+            body.classList.add("dark-mode");
+            themeIcon.src = "{{ .Site.BaseURL }}svg/moon.svg";
+            themeIcon.alt = "moon icon";
+        } else {
+            body.classList.remove("dark-mode");
+            themeIcon.src = "{{ .Site.BaseURL }}svg/sun.svg";
+            themeIcon.alt = "sun icon";
+        }
+        // Save the user-selected theme mode to local storage.
+        localStorage.setItem("theme", theme);
+    }
+
+    // Retrieve the user-selected theme mode from local storage
+    let theme = localStorage.getItem("theme") || "light";
+    const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (isDarkMode) {
+        // Site is in dark mode
+        setTheme('dark');
+
+    } else {
+        // Site is in light mode
+        setTheme('light');
+    }
+    setTheme(theme);
+
+    // Toggle theme when sun icon is clicked
+    document.getElementById("theme-toggle").addEventListener("click", function() {
+        if (theme === "light") {
+            theme = "dark";
+        } else {
+            theme = "light";
+        }
+        setTheme(theme);
+    });
+
+
+
+</script>
+
+</header>

@@ -1,0 +1,12 @@
+@import "variables";
+.footer {
+  padding: 18px;
+  font-size: $font-size-content;
+  font-size: smaller;
+  font-style: italic;
+}
+
+.dark-mode .footer {
+  background-color: $dark-navbar;
+ 
+}

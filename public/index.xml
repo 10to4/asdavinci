@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>As Da Vinci</title>
+    <link>https://asdavinci.ing/</link>
+    <description>Recent content on As Da Vinci</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 10 Dec 2022 00:00:00 +0800</lastBuildDate>
+    <atom:link href="https://asdavinci.ing/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About</title>
+      <link>https://asdavinci.ing/about/</link>
+      <pubDate>Wed, 03 Jan 2024 16:18:55 +0700</pubDate>
+      <guid>https://asdavinci.ing/about/</guid>
+      <description>This is a personal blog.&#xA;The use of good expression holds significant importance.&#xA;It serves as a platform for me to exercise my writing and speaking skills while also helping me organize my knowledge.</description>
+    </item>
+    <item>
+      <title>SHPLONK</title>
+      <link>https://asdavinci.ing/post/shplonk/</link>
+      <pubDate>Sat, 10 Dec 2022 00:00:00 +0800</pubDate>
+      <guid>https://asdavinci.ing/post/shplonk/</guid>
+      <description>在Plonk协议中，多项式承诺是非常重要的一个环节，协议中的多项式承诺实现了多个多项式在两个点上的open。但是在实际的应用场景下，有可能会出现需要多个多项式在多个不同点处open的场景，如果能通过改进多项式承诺协议来使得plonk支持多个多项式在不同的子集点处的open。&#xA;若 $ z \in S $，那么 $Z_S(x) = \prod_{z \in S} (X-z)$。&#xA;假设有一个数据集$T = {z_1, z_2, &amp;hellip;, z_t}$，并且它的子集$S_1,S_2,&amp;hellip;,S_k \subset T$。如果有k个多项式$f_1(x), f_2(x),&amp;hellip;,f_k(x)$，它们的承诺分别为$cm_1, cm_2,&amp;hellip;,cm_k$，要分别在$S_1,S_2,&amp;hellip;,S_k $上open。&#xA;首先若要使用KZG10对一个多项式做验证的话，那么&#xA;prover计算多项式 $$ h(x) = \frac{f_i(x) - r_i(x)}{Z_{S_i}(x)} $$&#xA;其中$r_i(x)$ 是一个$|s_i|$ 阶的多项式，且满足再$f_i(x) = r_i(x), x \in S_i$。&#xA;再使用srs参数计算证明$W =[h(x)]_1 = g^{h(x)}$，发送给verifier。&#xA;Verifier 拿到证明W后进行验证，这里需要两次pairing运算。&#xA;$$ e(cm_i - [r_i(x)]_1, g_2) = e(W,g_2 ^ {k}) $$&#xA;其中 $k = Z_{S_i}(x)$&#xA;如果要一次性得对这k个多项式进行验证，只需要引入一个随机数&#xA;verifier 生成一个随机数$\gamma$，并发送给prover&#xA;prover 拿着随机数将k组多项式的证明计算 $$ h_i(x) = \frac{f_i(x) - r_i(x)}{Z_{S_i}(x)} $$</description>
+    </item>
+    <item>
+      <title>Groth16 Ceremony Introduction</title>
+      <link>https://asdavinci.ing/post/groth16-ceremony/</link>
+      <pubDate>Fri, 29 Apr 2022 21:10:00 +0700</pubDate>
+      <guid>https://asdavinci.ing/post/groth16-ceremony/</guid>
+      <description>在 zkSNARK 协议中，经常会出现 Trusted Setup 步骤。这一步骤会产生一组基于电路的公共参数，被称为CRS（Common Reference String）。这些公共参数包括用于后续的证明和验证的证明密钥（pk）和验证密钥（vk）。Trusted Setup 过程中产生的一些随机值，被称为&amp;quot;toxic waste&amp;quot;。这些值是不能公开的，因为一旦被攻击者利用，它可以用来伪造的证明。所以产生 CRS 步骤必须由受信任方来完成，并且在创建 CRS 后立即销毁掉这些随机值。&#xA;通常我们很少考虑如何安全得生成CRS，只是简单地假设可以找到可信任的一方去生成CRS。但随着zkSNARK的使用日益广泛，尤其是引入区块链领域后，真正的货币价值受到威胁，而此时找到一个可以被广泛接受并值得信赖的一方几乎是不可能的。&#xA;Ben-Sasson等人[BCG+15]和随后一些研究中提出使用多方计算来生成CRS的方法。多个参与方共同参与生成CRS，这些参与方迭代构建CRS提供了随机性，随后诚实的参与者立即删除掉&amp;quot;toxic waste&amp;quot;。只要有一个贡献者是诚实的，那么就无法来伪造证明。但若所有参与者都联合起来作弊，依然可能会利用CRS的底层数学结构来创建不可靠的证明。&#xA;但是如果有很多无关联的独立参与者，那么所有参与者联合起来作弊的可能性就会降低到可以忽略不计。因此为了要最大化诚实和独立贡献者的数量，使用公开的仪式（ceremony）执行受信任的设置，其中多个参与者轮流执行计算。若社区用户对任何参与方都不信任，也可以亲自参与进来，并丢弃掉自己的 &amp;ldquo;toxic waste&amp;rdquo;。Zcash 项目在 2017 年就举行过这样的仪式。&#xA;1. ceremony 步骤 2017年，Bowe等人在论文[BGM17]中提出了一种新的MPC协议——MMORPG的协议，专门用于基于线性配对的zk-SNARKs，如Groth16。它解决了先前方案的一些缺点。它将Trusted Setup 分为两个阶段。第一阶段称为&amp;quot;Powers of Tau&amp;quot;，它主要是产生通用的设置参数，可用于方案的所有电路。第二阶段是结合特定的电路，将 Tau 次幂的输出转换为特定关系的 CRS。&#xA;前面提到，第一阶段产生的是通用的参数，它与特定的电路无关。因此在电路约束大小满足的前提下，一次仪式可以作为任意 Trusted Setup的第一阶段。这样做的一个好处是整个社区运行只要运行一个第一阶段仪式，就可以一直用下去，减轻了所有团队的负担。&#xA;第二阶段是将第一阶段产生的参数与具体项目的电路结合，产生相应的CRS。同样地，这一阶段也是有多方参与，只要有一方丢弃掉&amp;quot;toxic waste&amp;quot;，就可以认为这一阶段产生的参数是可信的。不过这一阶段就需要由各个项目方自己来执行了。&#xA;2. 开源工具 前面提到，为了减轻项目方的负担，社区中有一些开源的 Trusted Setup Ceremony 源码和可以参与的工具。&#xA;我们比较熟知的两个开源代码库有：phase2-bn254 和 snarkjs 。&#xA;phase2-bn254 是一个Rust语言实现的基于bn254曲线的开源库，loopring 的 Trusted Setup Ceremony 就是fork的这个仓库。&#xA;snarkjs 是js版本的snark实现，它方便于用于网页上运行，运行时间会比较慢一些，但是相对来说比较容易做到用户友好。&#xA;两个开源库的使用方法可以参考开源库中的说明文档。&#xA;对于第一阶段，社区使用最广泛的一个开源仪式就是 perpetualpowersoftau，这个仪式是永久性的，参与者数量没有限制。任何zk-SNARK项目也都可以选择仪式的任何点来开始他们特定于电路的第二阶段。Loopring，Tornado Cash等知名项目，第一阶段用的都是 perpetualpowersoftau 产生的结果。通过调用 phase2-bn254 和 snarkjs 任何人都可以参与贡献。它的参数能支持的约束上限为2 ^ 28 (约2.</description>
+    </item>
+  </channel>
+</rss>

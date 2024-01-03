@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://asdavinci.ing/about/</loc>
+    <lastmod>2024-01-03T16:18:55+07:00</lastmod>
+  </url><url>
+    <loc>https://asdavinci.ing/</loc>
+    <lastmod>2022-12-10T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://asdavinci.ing/categories/</loc>
+    <lastmod>2022-12-10T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://asdavinci.ing/post/</loc>
+    <lastmod>2022-12-10T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://asdavinci.ing/post/shplonk/</loc>
+    <lastmod>2022-12-10T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://asdavinci.ing/categories/zkp/</loc>
+    <lastmod>2022-12-10T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://asdavinci.ing/categories/groth16/</loc>
+    <lastmod>2022-04-29T21:10:00+07:00</lastmod>
+  </url><url>
+    <loc>https://asdavinci.ing/post/groth16-ceremony/</loc>
+    <lastmod>2022-04-29T21:10:00+07:00</lastmod>
+  </url><url>
+    <loc>https://asdavinci.ing/tags/</loc>
+  </url>
+</urlset>

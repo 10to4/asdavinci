@@ -1,0 +1,58 @@
+@import "variables";
+
+.post-toc {
+  margin-left: 16px;
+  font-size: 0.9em;
+  line-height: 1.6;
+  overflow: hidden;
+  white-space: nowrap;
+  @media (max-width: 768px){
+    margin-left: 0;
+  }
+  nav{
+    margin-left: -1rem;
+  }
+  ul,li {
+    list-style: none;
+  }
+  nav {
+    font-weight: bold;
+  }
+  nav > ul > li > a::before {
+    content: "┃";
+    color: $main-orange;
+  }
+  ul > li > ul > li :first-child::before {
+    content: "┃";
+    color: #fded01;
+  }
+  a :last-child {
+    margin-left: 5px;
+  }
+}
+
+#TableOfContents a:hover, #TableOfContents a:active {
+  color: $main-orange;
+}
+.toc-container {
+  position: fixed;
+  right: 5vw;
+  overflow: auto;
+  top: 100px;
+  width: 15vw;
+  bottom: 50px;
+  button{
+    display: none;
+  }
+  @media (max-width: 768px){
+    position: static;
+    width: auto;
+    #hide{
+      display: none;
+    }
+    button{
+      display: inline;
+    }
+  }
+  margin-bottom: 1rem;
+}

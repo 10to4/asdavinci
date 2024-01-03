@@ -1,0 +1,16 @@
+{{/*  列表类型页面的通用模板.点击blog之后展示出来的页面  */}}
+{{/*  user：为博客文章列表创建一个索引页面。
+>> hugo new blog/_index.md  */}}
+{{ define "main" }}
+<div class="container">
+    <div class="section">
+        <div class="content">
+            <h1>{{ .Title }}</h1>
+            {{ .Content }}
+            {{ range .Pages.ByPublishDate.Reverse }}
+            <a href="{{ .Permalink }}">{{ .Title }}</a>
+            {{ end }}
+        </div>
+    </div>
+</div>
+{{ end }}

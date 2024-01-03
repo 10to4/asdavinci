@@ -1,0 +1,15 @@
+name = "JuiceBar"
+license = "MIT"
+licenselink = "https://github.com/hotjuicew/hugo-JuiceBar/blob/master/LICENSE"
+description = ""
+homepage = "https://github.com/hotjuicew/hugo-JuiceBar"
+tags =  ["blog", "fast",  "responsive", "simple", "beautiful",  "pages"]
+features = ["fast",  "responsive", "archive", "tags"]
+min_version = "0.75.0"
+
+
+[author]
+  name = "Hotjuice"
+  homepage = "https://add1.dev"
+
+
