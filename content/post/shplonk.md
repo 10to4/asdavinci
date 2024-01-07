@@ -1,7 +1,9 @@
 ---
-title: "SHPLONK"
+title: SHPLONK
 date: 2022-12-10T00:00:00+08:00
-categories: ["zkp"]
+categories:
+  - zkp
+  - commitment
 ---
 
 在Plonk协议中，多项式承诺是非常重要的一个环节，协议中的多项式承诺实现了多个多项式在两个点上的open。但是在实际的应用场景下，有可能会出现需要多个多项式在多个不同点处open的场景，如果能通过改进多项式承诺协议来使得plonk支持多个多项式在不同的子集点处的open。

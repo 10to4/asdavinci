@@ -1,7 +1,10 @@
 ---
-title: "Groth16 Ceremony Introduction"
+title: Groth16 Ceremony Introduction
 date: 2022-04-29T21:10:00+07:00
-categories: ["groth16"]
+categories:
+  - groth16
+  - zkp
+  - ceremony
 ---
 
 
