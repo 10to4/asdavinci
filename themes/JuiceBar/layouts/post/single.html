@@ -20,7 +20,7 @@
                 </div>
             <div class="small-categories-container" id = "small-categories-container-style">
                  {{ range $idx, $category := .Params.categories }}
-                {{- if ne $idx 0 }}, {{ end }}<a href="{{ "categories/" | relURL }}{{ $category | urlize }}">{{
+                {{- if ne $idx 0 }}    {{ end }}<a style="background-color:#e9c05a; border-color:#e9c05a; border-style:solid; border-width:6px; border-radius:6px; margin-top:10px; margin-left:10px; font-size:smaller;" id="single-category-container-style" href="{{ "categories/" | relURL }}{{ $category | urlize }}">{{
                     $category }}</a>
                 {{- end }}
             </div>
