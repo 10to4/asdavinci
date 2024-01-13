@@ -5,7 +5,7 @@
 <div class="container">
     <div class="section">
         <div class="content">
-            <h1>{{ .Title }}</h1>
+            <h1>🟨 {{ .Title }}</h1>
             {{ .Content }}
             {{ range .Pages.ByPublishDate.Reverse }}
             <a href="{{ .Permalink }}">{{ .Title }}</a>
