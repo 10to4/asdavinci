@@ -4,6 +4,9 @@ baseURL = 'https://asdavinci.ing/'
 languageCode = 'en-us'
 title = 'As Da Vinci'
 
+# analytics
+google_analytics = "G-NQ27FNVSHM"
+
 [params]
 author = "Even Lu"
 description = "Good Expression is very a important thing. Start to exercise my writing and speaking skills at here. As well as to organize my knowledges."
