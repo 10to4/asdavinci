@@ -75,7 +75,7 @@ $VC.UpdateProof(\pi_i, \delta, i, j, upk_i, upk_j) \rightarrow \pi_i'$: 我们�
 	$\pi_i' = \pi_i + [\frac{L_j(\tau)}{\tau-\omega^i}]^\delta = \pi_i + u_{ij}^\delta$
   其中 $u_{ij}, u_{i}$ 可以在初始阶段就生成。
 
-### 4. partial fraction decomposition
+## 4. partial fraction decomposition
 多项式 $\phi(x) = \sum_{i \in [0, n)} L_i(x) v_i$，其中 $L_i(x) = \prod_{j \in [0, n), j \neq i}\frac{x - \omega_i}{\omega_i - \omega_j}$ 为拉格朗日多项式，我们可以使用 `partial fraction decomposition` 来变换$L_i(x)$。
 首先来定义多项式 $A_I(x) = \prod_{i \in I}(x - \omega^i)$（令 $A(x) = \prod_{i \in [0, n)}(x - \omega^i)$）。对多项式 $A_I(x)$ 求导，
 $$
@@ -93,7 +93,7 @@ $$
 
 有一种特殊情况，当$r(x) = 1$恒成立时，说明 $v_i =1$。那么 $\phi(x) = A(x) \sum_{i \in I} \frac{1}{A'(\omega^i) (x-\omega^i)} =1$也必然成立，那么 $\frac{1}{A_I(x)} = \sum_{i \in I} \frac{1}{A'(\omega^i) (x-\omega^i)}$。
 
-### 5. 聚合证明
+## 5. 聚合证明
 $VC.AggregateProofs(I, (\pi_i)\_{i \in I}) \rightarrow \pi_I$
 KZG10可以做单个点的证明，也可以正多个点的batch证明。我们可以把多个单点的证明聚合成一个batch证明。
 已知一组点$I$的证明 $\\{ \pi_i\\}\_{i \in I}$，其中 $\pi_i = \frac{\phi(\tau) - v_i}{\tau - \omega^i}$
@@ -106,7 +106,7 @@ $=\sum_{j \in I}\frac{\phi(x)}{A_I'(\omega^j) (x -\omega^j)} - \sum_{j \in I}\fr
 $= \sum_{j \in I}\frac{q_i(x)}{A_I'(\omega^j)}$
 其中 $A_I'(\omega^j)$ 可以在初始阶段就生成。
 
-### 6. KeyGen 及验证
+## 6. KeyGen 及验证
 除了最初的一组安全的 SRS 公开参数 $(g^{\tau^i})_{i \in [0, n]}$，aSVC在处理承诺和证明之前，还需要生成一系列的KEY，以提高承诺和证明速度。
 
 1. $VC.KeyGen(1^\lambda, n) \rightarrow prk, vrk, (upk_j)_{j \in [0, n)}$：
@@ -121,7 +121,7 @@ $= \sum_{j \in I}\frac{q_i(x)}{A_I'(\omega^j)}$
 	1. 为了验证 $\omega^i$ 是 $x^n-1$ 的根，可以通过 $e(a_i, [\tau -\omega^i) = e(a, g)$
 	2. 为了验证 $L_i(\omega^i)=1$，$e(l_i - [1], [1]) = e(u_i, [\tau] - [\omega^i])$
 
-### 7. 完整的验证步骤
+## 7. 完整的验证步骤
 ![asvc](/images/contents/asvc.png)
 
 
