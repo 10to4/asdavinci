@@ -11,20 +11,12 @@
     <link rel="stylesheet" href="{{ $styles.Permalink }}">
     <link rel="icon" href="/images/icon.png" type="image/x-icon">
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NQ27FNVSHM"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-NQ27FNVSHM');
-    </script>
+   
 
     <!-- {{ template "_internal/opengraph.html" . }}
     {{ template "_internal/twitter_cards.html" . }} -->
-    <!-- {{ if not (in (string .Site.BaseURL) "localhost") }} -->
-    <!-- {{ template "_internal/google_analytics_async.html" . }} -->
-    <!-- {{ end }} -->
+    {{ if not (in (string .Site.BaseURL) "localhost") }}
+    {{ template "_internal/google_analytics_async.html" . }}
+    {{ end }}
 
 </head>

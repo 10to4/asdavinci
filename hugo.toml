@@ -5,7 +5,10 @@ languageCode = 'en-us'
 title = 'As Da Vinci'
 
 # analytics
-google_analytics = "G-NQ27FNVSHM"
+# google_analytics = "G-NQ27FNVSHM"
+[services]
+  [services.googleAnalytics]
+    ID = 'G-NQ27FNVSHM'
 
 [params]
 author = "Even Lu"
