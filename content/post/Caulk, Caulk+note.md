@@ -39,7 +39,7 @@ Caulk, Caulk+（以及很多其他的Lookup  Argument ，如Baloo，CQ，CQLin�
 4. 证明者（prover）计算多项式 C(x) 在$\alpha$ 处的取值 $y = C(\alpha)$，并生成证明 $\pi$，将 $(y, \pi)$ 发送给验证者（verifier）。
 	$\frac{C(x)-y}{x-\alpha} = Q(x), \pi = [Q(\tau)]_1$，
 5. 验证者（verifier）执行验证
-		$e(C-[y]_1, [1]_2) = e(\pi, [\alpha]_2 - [1]_2)$
+		$e(C-[y]_1, [1]_2) = e(\pi, [\tau]_2 - [\alpha]_2)$
 
 KZG10 方案还可以用来一次做多点的打开（batch opening）和验证，协议步骤如下：
 1. 首先，证明者（prover）和验证者（verifier）获得一组安全的 SRS 参数
