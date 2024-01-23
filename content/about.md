@@ -6,8 +6,6 @@ heroimage: /images/evenlu.png
 layout: about
 ---
 
-This is a personal blog.
+This is a personal blog, documenting learning, reading, reflective notes, and daily memos.
 
-The use of good expression holds significant importance. 
-
-It serves as a platform for me to exercise my writing and speaking skills while also helping me organize my knowledge.
+Life is hard to truly flaunt, but at least expression is the best way for one to connect with the world.
