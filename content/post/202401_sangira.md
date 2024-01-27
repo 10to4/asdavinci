@@ -8,7 +8,8 @@ categories:
 ---
 论文链接：[sangira](https://github.com/geometryresearch/technical_notes/blob/main/sangria_folding_plonk.pdf)
 
-在[Nova](https://eprint.iacr.org/2021/370.pdf) 论文中定义了一种基于Committed Relaxed R1CS的折叠方案，用来实现零知识的IVC（incrementally-verifiable computation）。这边方案可以用于折叠R1CS结构的instance-witness来做证明，参考[文章](./202401_relaxed_r1cs)。
+在[Nova](https://eprint.iacr.org/2021/370.pdf) 论文中定义了一种基于Committed Relaxed R1CS的折叠方案，用来实现零知识的IVC（incrementally-verifiable computation）。这边方案可以用于折叠R1CS结构的instance-witness来做证明，参考[文章](../202401_relaxed_r1cs)。
+
 Sangira是基于Plonk的电路结构 Plonkish 的变种实现的折叠方案。
 ## 1. Plonk 和 Relaxed Plonk
 ### 1.1 Plonk 电路结构
