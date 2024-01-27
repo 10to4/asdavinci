@@ -15,7 +15,7 @@ categories:
 
 > Consider a finite field $\mathbb{F}$. Let the public parameters consists of size bounds $m, n, l \in \mathbb{N}$ where $m > l$. The R1CS structure consists of sparse matrices $A, B, C \in \mathbb{F}^{m \times m}$ with at most $n = \Omega(m)$ non-zero entries in each matrix. An instance $x \in \mathbb{F}^l$ consists of public inputs and outputs and is satisfied by a witness $W \in \mathbb{F}^{m - l - 1}$ if $(A \cdot Z) \circ (B \cdot Z) = (C \cdot Z)$, where $Z = (W, x, 1)$
 
-在R1CS结构中，有三个 $m \times m$ 的矩阵 A，B，C 和一个长度为m向量 $Z$，它们需要满足$(A \cdot Z) \circ (B \cdot Z) = (C \cdot Z)$的关系，其中A，B，C三个矩阵用来表达约束关系，$Z = (W, x, 1)$ 向量的内容为输入，包括表示为W的witness，表示为 x的instance，即公开的输入输出，和一个1。
+在R1CS结构中，有三个 $m \times m$ 的矩阵 A，B，C 和一个长度为m向量 $Z$，它们需要满足$(A \cdot Z) \circ (B \cdot Z) = (C \cdot Z)$的关系，其中A，B，C三个矩阵用来表达约束关系，$Z = (W, x, 1)$ 向量的内容为输入，包括表示为W的witness，表示为 x 的 instance，即公开的输入输出，和一个1。
 
 ### 1.2 Relaxed R1CS
 
@@ -66,10 +66,11 @@ $= u \cdot C \cdot Z + E$
 
 ## 3. A Folding Scheme for Committed Relaxed R1CS
 下面来看一下完整的协议：
+
 0. setup
 	1. ${G}(1^\lambda) \rightarrow pp$：输出 $m,n,l \in \mathbb{F}$，及承诺的参数 $pp_W$ 和 $pp_E$，长度分别为 m 和 m-l-1。
 	2. $K(pp, (A, B, C)) \rightarrow (pk, vk)$：输出pk 和 vk 
-1. 证明者拥有两组witness: $(E_1, r_{E_1}, W_1, r_{W_1})$ 和$(E_2, r_{E_2}, W_2, r_{W_2})$和对应的instance：$(\overline{E}_1, u_1, \overline{W}_1, x_1)$ 和 $(\overline{E}_2, u_2, \overline{W}_2, x_2)$ ，验证者（verifier）获得这两组instance：$(\overline{E}_1, u_1, \overline{W}_1, x_1)$ 和 $(\overline{E}_2, u_2, \overline{W}_2, x_2)$ 
+1. 证明者（prover）拥有两组witness: $(E_1, r_{E_1}, W_1, r_{W_1})$ 和$(E_2, r_{E_2}, W_2, r_{W_2})$和对应的instance：$(\overline{E}_1, u_1, \overline{W}_1, x_1)$ 和 $(\overline{E}_2, u_2, \overline{W}_2, x_2)$ ，验证者（verifier）获得这两组instance：$(\overline{E}_1, u_1, \overline{W}_1, x_1)$ 和 $(\overline{E}_2, u_2, \overline{W}_2, x_2)$ 
 2. 证明者（prover）产生随机数 $r_T$，并计算cross term T及其承诺，并将承诺发送给验证者（verifier）
 	- $T = (A \cdot Z_1) \circ (B \cdot Z_2) + (A \cdot Z_2) \circ (B \cdot Z_1) - u_1 \cdot C \cdot Z_2 - u_2 \cdot C \cdot Z_1$，
 	- $\overline{T} = Com(pp_E, T, r_T)$
