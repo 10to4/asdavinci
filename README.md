@@ -1,6 +1,6 @@
 # As Da Vinci
 
-my personal blog
+my personal notes
  https://asdavinci.ing
 
 Some kinds of articles will post

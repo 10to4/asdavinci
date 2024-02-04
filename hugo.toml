@@ -15,7 +15,7 @@ author = "Even Lu"
 description = "Good Expression is very a important thing. Start to exercise my writing and speaking skills at here. As well as to organize my knowledges."
 authorImage = "/images/evenlu.png"
 paginate = 5 
-Title = "Even Lu's BLOG"
+Title = "Even Lu's Notes"
 content = "My notes about learning, reading, thinking, and memo...   "
 imageUrl = "/images/evenlu.png"
 
@@ -52,13 +52,13 @@ tag = "tags"
 
 # To add a new navigation link
 [[menu.main]]
-name = "Blog"
+name = "  Notes"
 url = "/post"
 [[menu.main]]
 name = "About"
 url = "/about"
 [[menu.main]]
-name = "Categories"
+name = " Categories"
 url = "/categories"
 
 # If using the giscus commenting system

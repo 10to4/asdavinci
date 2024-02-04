@@ -35,7 +35,7 @@ category = "categories"
 name = "About"
 url = "/about"
 [[menu.main]]
-name = "Blog"
+name = "Notes"
 url = "/post"
 [[menu.main]]
 name = "Categories"
