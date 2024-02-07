@@ -5,7 +5,7 @@ categories:
   - zkp
   - curve
 ---
-问题链接：[Gamma Ray](https://zkhack.dev/zkhackIV/puzzleF1.html)
+题目链接：[Gamma Ray](https://zkhack.dev/zkhackIV/puzzleF1.html)
 ## 1. 问题描述
 
 首先来看一下问题描述：

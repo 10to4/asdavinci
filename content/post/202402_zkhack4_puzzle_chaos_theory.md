@@ -1,10 +1,10 @@
 ---
-title: "【解题】ZKHACK IV Puzzle#3: chaos theory"
-date: 2024-02-04T19:00:00+08:00
+title: "【解题】ZKHACK IV Puzzle#3: Chaos Theory"
+date: 2024-02-04T22:00:00+08:00
 categories:
   - zkp
 ---
-题目链接：[Chaos theory](https://zkhack.dev/zkhackIV/puzzleF3.html)
+题目链接：[Chaos Theory](https://zkhack.dev/zkhackIV/puzzleF3.html)
 ## 1. 问题描述
 > Bob designed a new one time scheme, that's based on the tried and true method of encrypt + sign. He combined ElGamal encryption with BLS signatures in a clever way, such that you use pairings to verify the encrypted message was not tampered with. Alice, then, figured out a way to reveal the plaintexts...
 > 
@@ -40,7 +40,7 @@ impl Sender {
 ```
 ElGamal 加密算法的参与方分为sender和receiver，他们分别持有一组公私钥对。
 
-ElGamal 加密算法产生的密文有两个值(c1, c2)，其中 $c_1 = pk_{sender} = g_1^{sk_{sender}}, c_2 = pk^{sk_{sender}}_{receiver} *  m$。
+ElGamal 加密算法产生的密文有两个值(c1, c2)，其中 $c_1 = pk_{sender} = g_1^{sk_{sender}}, c_2 = pk^{sk_{sender}}_{receiver} \cdot m$。
 
 ### 2.2 BLS签名算法
 
