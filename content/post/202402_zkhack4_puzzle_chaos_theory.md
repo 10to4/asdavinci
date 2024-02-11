@@ -10,7 +10,7 @@ categories:
 > 
 > Bob 设计了一个新的一次性方案，这是基于加密+签名的久经考验的方法。他用一个聪明的方法将ElGamal加密算法和BLS签名结合，使得你可以使用pairings来验证加密信息未被篡改。然后 Alice 发现了一个方法能够揭示出明文... 
 
-Bob 把ElGamal加密算法和BLS签名结合起来，设计了一套新方案，但是Alice可以从中破解出被加密的数据。我们接下来要做的就是找到Alice获取加密元象的方法。
+Bob 把ElGamal加密算法和BLS签名结合起来，设计了一套新方案，但是Alice可以从中破解出被加密的数据。我们接下来要做的就是找到Alice获取加密原象的方法。
 
 ## 2. 代码原理分析
 
@@ -64,7 +64,7 @@ impl Auditor {
 
 使用BLS签名对ElGamal 加密密文c进行签名验证。
 
-authenticate()函数进行签名 $s = hash_c^{sk_{sender}}$；
+authenticate() 函数进行签名 $s = hash_c^{sk_{sender}}$；
 
 check_auth() 函数进行验证 $e(g_1, pk_{sender}) = e(s, hash_c)$。
 
@@ -82,7 +82,7 @@ pub struct Blob {
 
 使用BLS签名验证算法对Blob数据进行验证。
 ## 3. 问题分析
-问题代码中，首先生成一组 Message，然后导入一个Blob文件，然后对文件内容进行BLS验证。我们要做的是去获取ElGamal加密的原文是这组Message中的哪一个。
+问题代码中，首先生成一组 Message，然后导入一个 Blob 文件，并对 Blob 文件执行 BLS 验证。我们要做的是去获的ElGamal加密的原文在这组Message中的位置。
 ```rust
 pub fn main() {
     ...
@@ -102,20 +102,23 @@ pub fn main() {
 }
 ```
 我们可以观察一下密文c。
-$c_2 = pk^{sk_{sender}}_{receiver} *  m = (g_1^{sk_{receiver}})^{sk_{sender}}+m = g_1^{sk_{receiver} * sk_{sender}}+m$
+
+$c_2 = pk^{sk\_{sender}}\_{receiver} *  m = (g_1^{sk_{receiver}})^{sk_{sender}}+m = g_1^{sk_{receiver} * sk_{sender}}+m$
 
 $==> c_2 - m = g_1^{sk_{receiver} * sk_{sender}}$
 
 $==> e(c_2 - m, g_2) = e(g_1^{sk_{receiver}}, g_2^{sk_{sender}}) = e(rec_{pk}, g_2^{sk_{sender}})$
 
-虽然我们不知道 $g_2^{sk_{sender}}$，但是由于 $hash_c$ 和 $s = hash_c^{sk_{sender}}$，因此我们可以用s来代替$g_2^{sk_{sender}}$，
+虽然我们不知道 $g_2^{sk_{sender}}$，但是由于我们有 $hash_c$ 和 $s = hash_c^{sk_{sender}}$，因此可以用s来代替$g_2^{sk_{sender}}$，
 即 $e(c_2 - m, hash_c) = e(g_1^{sk_{receiver}}, hash_c^{sk_{sender}})= e(rec_{pk}, s)$
 
 ## 4. 解答
 
 首先我们先进行hash_c = hash(c)。
+
 接下来可以遍历 Message，使用 Message带入计算 re_sender_pk = $c_2 - m$。
-计算 lhs = e(re_sender_pk, hash_c)，rhs = e(rec_pk, s)，若 lhs 与 rhs相等，则说明当前的message就是被加密的message
+
+计算 lhs = e(re_sender_pk, hash_c)，rhs = e(rec_pk, s)，若 lhs 与 rhs相等，则说明当前的message就是被加密的message。
 
 实现代码如下：
 ```rust
@@ -129,6 +132,6 @@ for (i, m) in messages.iter().enumerate() {
     }
 }
 ```
-总之，通过循环访问所有可能的Message，我们可以确定 blob 中的密文对应哪条消息。如果它们匹配，则输出原始消息的索引。
+总之，通过循环访问所有可能的Message，我们可以确定 blob 中的密文对应哪条 Message。如果它们匹配，则输出原始消息的索引值。
 
 

@@ -12,17 +12,17 @@ categories:
 
 > Bob was deeply inspired by the Zcash design for private transactions and had some pretty cool ideas on how to adapt it for his requirements. He was also inspired by the Mina design for the lightest blockchain and wanted to combine the two. In order to achieve that, Bob used the MNT7653 cycle of curves to enable efficient infinite recursion, and used elliptic curve public keys to authorize spends. He released a first version of the system to the world and Alice soon announced she was able to double spend by creating two different nullifiers for the same key...
 > 
-> Bob 在隐私交易上深受Zcash的设计的启发，并在如何修改它来满足自己的需求上有一些想法。他在最轻量级区块链上也受到了Mina的启发，他想将两者结合起来。为了实现这个目的，Bob使用了MNT7653循环曲线来实现有效的无限递归，并且使用椭圆曲线公钥来认证花费。他向世界发布第一个版本的系统，但是Alice很快就宣称她能够通过创建同一个key上的两个不同的nullifiers来实现双花...
+> Bob 在隐私交易上深受Zcash设计的启发，并在如何修改它来满足自己的需求上有一些想法。他在最轻量级区块链上也受到了Mina的启发，他想将两者结合起来。为了实现这个目的，Bob使用了MNT7653循环曲线来实现有效的无限递归，并且使用椭圆曲线公钥来认证花费。他向世界发布第一个版本的系统，但是Alice很快就宣称她能够通过创建同一个key上的两个不同的nullifiers来实现双花...
 
-Bob结合来Zcash 和 Mina 的设计思想，设计了一套他隐私交易协议，但是不幸的是，协议中存在一个双花漏洞。这道题里面我们要做的事情其实就是实现双花。
+总结一下，Bob 结合Zcash 和 Mina 的设计思想，设计了一套隐私交易协议，但是不幸的是，协议中存在一个双花漏洞。解这道题其实就是去实现双花。
 ## 2. 代码原理分析
 
-我们先结合代码分析一下Bob的协议原理。这套协议里面使用了Merkel tree来保存所有的资产信息，每个叶子节点代表一笔资产。为了隐藏资产信息，叶子节点上并不直接保存资产信息，而是将资产信息的加密值保存在叶子节点上。当用户要花费一笔资产的时候，要生成验证的电路数据，最后需要使用Groth16进行验证。
-我们来看一下几个关键步骤的原理：
+我们先结合代码分析一下Bob的协议原理。这套协议里面使用了Merkel tree来保存所有的资产信息，每个叶子节点代表一笔资产，Merkle Root 作为公开值。为了隐藏资产信息，叶子节点上并不直接保存资产信息，而是将资产信息的加密值保存在叶子节点上。当用户要花费一笔资产的时候，要基于验证电路生成证明，最后使用Groth16进行验证。
+其中几个关键步骤的原理：
 
 **1.资产信息加密**
 
-代码中我们用 `secret` 来表示要加密的资产信息，以下是产生约束代码的部分中，对 `secret`进行加密产生叶子节点数值的约束代码相关的部分：
+代码中我们用 `secret` 来表示要加密的资产信息，以下的代码对 `secret` 进行加密产生叶子节点数值的约束代码相关的部分：
 
 ```rust
 let secret = FpVar::new_witness(ark_relations::ns!(cs, "secret"), || Ok(self.secret))?;
@@ -32,11 +32,11 @@ let pk = base.scalar_mul_le(secret_bits.iter())?.to_affine()?;
 // Allocate Leaf
 let leaf_g: Vec<_> = vec![pk.x];
 ```
-这里对secret进行加密：$pk = base ^{secret}$ ，其中base是MNT6-753双线性群上的G1的生成元。pk是曲线上的一个点，然后取x轴的值做为保存在叶子结点上的值。
+这里对secret进行加密：$pk = base ^{secret}$ ，其中base是椭圆曲线 MNT6-753上的G1的生成元。pk是曲线上的一个点，然后取x轴的值做为保存在叶子结点上的值。
 
-**2.merkle proof**
+**2.Merkle proof**
 
-产生叶子节点后，接下来就是对叶子结点的值做证明。merkle root是公开的信息，用户要产生他的叶子节点对应的merkle path上的所有值做为proof。
+产生叶子节点后，接下来就是对叶子结点的值做证明。Merkle Root是公开的信息，用户要产生他的叶子节点对应的merkle path 来作为 proof。
 
 ```rust
 let tree_proof = tree.generate_proof(i).unwrap();
@@ -53,7 +53,7 @@ let tree_proof = tree.generate_proof(i).unwrap();
 	
 **3.nullifier**
 
-由于资产信息是隐藏的，所以除了用户本身，其它人无法获知资产的具体信息，但是需要一些办法来构造可以公开的唯一标识来标记资产信息。在Bob的协议中，他使用了一个字段 `nullifier` 来做为这个凭证，`nullifier` 是secret的哈希值，它使用了poseidon哈希算法实现的。原则上，这里 `nullifier` 应该可以用来避免双花的问题。
+由于资产信息是隐藏的，资产信息不会在Merkle Tree上公开存储，所以需要一些办法来构造可以公开的唯一标识去标记资产信息。在Bob的协议中，他使用了一个字段 `nullifier` 来做为凭证，`nullifier` 是secret的哈希值，它使用了poseidon哈希算法计算得来的。
 
 ```rust
 let nullifier = <LeafH as CRHScheme>::evaluate(&leaf_crh_params, vec![leaked_secret]).unwrap();
@@ -65,7 +65,7 @@ Bob的协议里使用了Groth16做为零知识证明系统。Groth16 的执行�
 
 `use ark_mnt4_753::{Fr as MNT4BigFr, MNT4_753};`
 
-在这段电路检查中有两个public input：merkle root 和nullifier，剩下的输入值是witness。
+在这段电路检查中有两个public input：Merkle Root 和 `nullifier`，剩下的输入值是witness。
 ```rust
 let c = SpendCircuit {
 	leaf_params: leaf_crh_params.clone(),
@@ -82,19 +82,19 @@ assert!(Groth16::<MNT4_753>::verify(&vk, &vec![root, nullifier], &proof).unwrap(
 
 **5.电路**
 
-我们需要在电路里实现验证逻辑。结合上面的分析，我们可以总结一下电路验证的内容：
+接下来就是在电路里实现验证逻辑。结合上面的分析，我们可以总结一下电路验证的内容：
 
 1）验证 `nullifier` 与`secret` 的关系
 
-`nullifier` 是在资产信息保存到merkle tree的时候就确定下来的资产凭证，因此在花费这笔资产的时候需要取验证`nullifier` 字段，即需要验证要带到电路里执行验证的资产信息字段`secret` 的哈希值就是 `nullifier`。
+`nullifier` 是在资产信息保存到 Merkle Tree 的时候就确定下来的资产凭证，因此在花费这笔资产的时候需要取验证 `nullifier` 字段，即需要验证要带到电路里执行验证的资产信息字段`secret` 的哈希值就是 `nullifier`。
 
 2）验证叶子节点取值是`secret`的加密值
 
 叶子节点是由 `secret` 加密而来的，因此我们需要验证要带到电路里执行验证的资产信息字段`secret` 的加密后的值是否是叶子节点上的值
 
-3）验证叶子节点的merkle proof
+3）验证叶子节点的 Merkle Proof
 
-获得叶子节点的取值后，需要再继续对叶子节点展开merkle proof的验证。
+获得叶子节点的取值后，需要再继续对叶子节点做 Merkle Proof 的验证。
 	
 ```rust
 fn generate_constraints(
@@ -128,12 +128,12 @@ fn generate_constraints(
 ```
 
 ## 3. 问题分析
-上面的验证步骤包含了三个环节
+结合上一节的分析，上面的验证步骤包含了三个环节
 1) nullifier = hash(secret)
 2) leaf_g = pk.x, $pk = base^{secret}$
-3) merkle proof(node)
+3) Merkle Proof(node)
 
-其中哈希验证和merkle proof的验证步骤不太容易存在漏洞，问题最大的可能是在从 `secret` 生成叶子节点值leaf_g的环节。
+根据代码来看，哈希验证和Merkle Proof的验证步骤不太容易存在漏洞，所以问题最大的可能是在从 `secret` 生成叶子节点值leaf_g的环节。
 先来看一下代码，代码这部分   
 ```rust
 fn main() {
@@ -182,11 +182,11 @@ fn main() {
 }
 ```
 
-根据这段代码，我们需要找到另一个秘密信息 $secret\\_hack$，它对应的哈希值 nullifier_hack 必须和 nullifier 不同，并且它可以通过电路约束的检查。
+根据这段代码，我们需要找到另一个秘密信息 $secret\\_hack$，它对应的哈希值 nullifier_hack 必须和 `nullifier` 不同，并且它可以通过电路约束的检查。
 
-再回到生成叶子节点的步骤 leaf_g = pk.x, $pk = base^{secret}$。如果我们使用新的 $secret\_hack$ 可以生成同样的leaf_g，那么就可以达到目的。
+再回到生成叶子节点的步骤 leaf_g = pk.x，$pk = base^{secret}$。如果我们使用新的 $secret\_hack$ 可以生成同样的leaf_g，那么就可以达到目的。
 
-令 $pk\\_hack = g1^{secret\_hack}$ ，那么若 leaf_g = pk_hack.x，只表明 pk_hack和 pk相等或者 pk_hack在椭圆曲线上的位置和 pk是对称的（即pk.x = pk_hack.x，pk.y = pk_hack.y）。
+令 $pk\\_hack = g1^{secret\_hack}$ ，那么若 leaf_g = pk_hack.x，只表明 pk_hack和 pk 相等或者 pk_hack 在椭圆曲线上的位置和 pk 是对称的（即pk.x = pk_hack.x，pk.y = pk_hack.y）。显然这里确实存在作弊空间。
 
 由于 $nullifier\_hack \neq nullifier$，所以 $secret\_hack \neq secret$，那么必然 $pk\_hack \neq pk$。所以必然 pk_hack 和 pk 是对称点。
 
