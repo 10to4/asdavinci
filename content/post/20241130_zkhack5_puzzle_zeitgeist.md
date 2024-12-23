@@ -1,5 +1,5 @@
 ---
-Title: "【解题】ZKHACK V Puzzle#1: Zeitgeist"
+title: "【解题】ZKHACK V Puzzle#1: Zeitgeist"
 date: 2024-11-30T19:00:00+08:00
 categories:
   - zkp
